@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "08316b50-950e-4d9c-8240-f3663c5c8318",
+		"name": "Open to intern",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create College",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"College creation has a successful response\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.status).to.eql(true);",
+							"    pm.expect(jsonData.data).exist;",
+							"    pm.expect(jsonData.data.logoLink).exist;",
+							"    pm.expect(jsonData.data.fullName).exist;",
+							"    pm.expect(jsonData.data.name).exist;",
+							"",
+							"});",
+							"pm.collectionVariables.set(\"college_name\", pm.response.json().data.name);",
+							"pm.collectionVariables.set(\"college_id\", pm.response.json().data._id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"name\": \"iitd\",\n\t\"fullName\": \"Indian Institute of Technology, Delhi\",\n\t\"logoLink\": \"https://functionup-stg.s3.ap-south-1.amazonaws.com/thorium/iitd.png\" \n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/functionup/colleges",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"functionup",
+						"colleges"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Intern",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Intern creation has a successful response\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.status).to.eql(true);",
+							"    pm.expect(jsonData.data).exist;",
+							"    pm.expect(jsonData.data.name).exist;",
+							"    pm.expect(jsonData.data.email).exist;",
+							"    pm.expect(jsonData.data.mobile).exist;",
+							"    pm.expect(jsonData.data.collegeId).exist;",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"name\": \"John Wick\", \n\t\"email\": \"jw@gmail.com\", \n\t\"mobile\": \"9090909191\", \n\t\"collegeName\": \"{{college_name}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/functionup/interns",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"functionup",
+						"interns"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch College details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Getch college details has a successful response\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.status).to.eql(true);",
+							"    pm.expect(jsonData.data).exist;",
+							"    pm.expect(jsonData.data.logoLink).exist;",
+							"    pm.expect(jsonData.data.fullName).exist;",
+							"    pm.expect(jsonData.data.name).exist;",
+							"    pm.expect(jsonData.data.interns).exist;",
+							"    pm.expect(jsonData.data.interns).to.be.an('array')",
+							"    ",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/functionup/collegeDetails?collegeName={{college_name}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"functionup",
+						"collegeDetails"
+					],
+					"query": [
+						{
+							"key": "collegeName",
+							"value": "{{college_name}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "college_id",
+			"value": ""
+		},
+		{
+			"key": "college_name",
+			"value": ""
+		}
+	]
+}
